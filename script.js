@@ -53,7 +53,7 @@ function renderQuestions() {
       input.name = `question-${i}`;
       input.value = choice;
 
-      // Restore checked option from session storage
+      // Restore checked option
       if (userAnswers[i] === choice) {
         input.checked = true;
       }
@@ -87,7 +87,7 @@ submitBtn.addEventListener("click", () => {
   localStorage.setItem("score", score.toString());
 });
 
-// Restore score if already submitted
+// Restore score on page reload
 const storedScore = localStorage.getItem("score");
 if (storedScore !== null) {
   scoreElement.textContent = `Your score is ${storedScore} out of ${questions.length}.`;
