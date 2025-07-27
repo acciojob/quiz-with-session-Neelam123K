@@ -1,5 +1,4 @@
 // Quiz Data
-// Quiz Data
 const questions = [
   {
     question: "What is the capital of France?",
@@ -8,7 +7,7 @@ const questions = [
   },
   {
     question: "What is the highest mountain in the world?",
-    choices: ["Kilimanjaro", "Everest", "Denali", "Matterhorn"],
+    choices: ["Everest", "Kilimanjaro", "Denali", "Matterhorn"],
     answer: "Everest",
   },
   {
@@ -23,7 +22,7 @@ const questions = [
   },
   {
     question: "What is the capital of Canada?",
-    choices: ["Ottawa", "Toronto", "Montreal", "Vancouver"],
+    choices: ["Toronto", "Montreal", "Vancouver", "Ottawa"],
     answer: "Ottawa",
   },
 ];
@@ -65,7 +64,7 @@ function renderQuestions() {
       });
 
       label.appendChild(input);
-      label.appendChild(document.createTextNode(choice)); // Append choice text
+      label.appendChild(document.createTextNode(choice));
       questionDiv.appendChild(label);
       questionDiv.appendChild(document.createElement("br"));
     });
