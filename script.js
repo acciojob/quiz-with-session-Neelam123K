@@ -27,71 +27,48 @@ const questions = [
   },
 ];
 
-// DOM Elements
-const questionsElement = document.getElementById("questions");
-const submitBtn = document.getElementById("submit");
-const scoreElement = document.getElementById("score");
+const questions = document.querySelectorAll('#questions div');
 
-// Load previous answers from sessionStorage
-let userAnswers = JSON.parse(sessionStorage.getItem("progress")) || [];
-
-// Render Questions with Restored Answers
-function renderQuestions() {
-  questionsElement.innerHTML = "";
-
-  questions.forEach((question, i) => {
-    const questionDiv = document.createElement("div");
-    const questionText = document.createElement("p");
-    questionText.textContent = question.question;
-    questionDiv.appendChild(questionText);
-
-    question.choices.forEach((choice) => {
-      const label = document.createElement("label");
-      const input = document.createElement("input");
-
-      input.type = "true";
-      input.name = `question-${i}`;
-      input.value = choice;
-
-      // Restore checked option from session storage
-      if (userAnswers[i] === choice) {
-        input.checked = true;
-      }
-
-      input.addEventListener("change", () => {
-        userAnswers[i] = choice;
-        sessionStorage.setItem("progress", JSON.stringify(userAnswers));
-      });
-
-      label.appendChild(input);
-      label.appendChild(document.createTextNode(choice));
-      questionDiv.appendChild(label);
-      questionDiv.appendChild(document.createElement("br"));
+// Save selected answers in sessionStorage
+questions.forEach((question, index) => {
+  const radios = question.querySelectorAll('input[type="radio"]');
+  radios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      sessionStorage.setItem(`progress_q${index + 1}`, radio.value);
     });
-
-    questionsElement.appendChild(questionDiv);
   });
-}
+});
 
-// Handle Submit
-submitBtn.addEventListener("click", () => {
+// Restore selected answers on page load
+window.onload = () => {
+  questions.forEach((question, index) => {
+    const savedAnswer = sessionStorage.getItem(`progress_q${index + 1}`);
+    if (savedAnswer) {
+      const radio = question.querySelector(`input[type="radio"][value="${savedAnswer}"]`);
+      if (radio) {
+        radio.checked = true;
+      }
+    }
+  });
+
+  const storedScore = localStorage.getItem('score');
+  if (storedScore) {
+    document.getElementById('score').innerText = `Your score is ${storedScore} out of 5.`;
+  }
+};
+
+// Submit button logic
+document.getElementById('submit').addEventListener('click', () => {
+  const correctAnswers = ['a', 'b', 'a', 'b', 'a']; // Correct options
   let score = 0;
 
-  questions.forEach((question, i) => {
-    if (userAnswers[i] === question.answer) {
+  questions.forEach((question, index) => {
+    const selected = question.querySelector('input[type="radio"]:checked');
+    if (selected && selected.value === correctAnswers[index]) {
       score++;
     }
   });
 
-  scoreElement.textContent = `Your score is ${score} out of ${questions.length}.`;
-  localStorage.setItem("score", score.toString());
+  document.getElementById('score').innerText = `Your score is ${score} out of 5.`;
+  localStorage.setItem('score', score);
 });
-
-// Restore score if already submitted
-const storedScore = localStorage.getItem("score");
-if (storedScore !== null) {
-  scoreElement.textContent = `Your score is ${storedScore} out of ${questions.length}.`;
-}
-
-// Initial render
-renderQuestions();
