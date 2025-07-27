@@ -52,12 +52,13 @@ function renderQuestions() {
       input.type = "radio";
       input.name = `question-${i}`;
       input.value = choice;
-	  input.setAttribute("checked", true);
+	  
 
 		console.log("inputttt", input)
 
       // Restore checked option
       if (userAnswers[i] === choice) {
+		  input.setAttribute("checked", true);
         input.checked = true;
       }
 
@@ -89,7 +90,7 @@ submitBtn.addEventListener("click", () => {
   scoreElement.textContent = `Your score is ${score} out of ${questions.length}.`;
   localStorage.setItem("score", score.toString());
 
-	questionsElement.innerhHTML = "";
+	questionsElement.innerHTML = "";
 	
 });
 
