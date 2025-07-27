@@ -52,6 +52,9 @@ function renderQuestions() {
       input.type = "radio";
       input.name = `question-${i}`;
       input.value = choice;
+	  input.setAttribute("checked", true);
+
+		console.log("inputttt", input)
 
       // Restore checked option
       if (userAnswers[i] === choice) {
